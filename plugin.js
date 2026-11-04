@@ -1,7 +1,5 @@
-
-```javascript
 // ============================================================
-//  Plugin Cuevana3a para Zynora (v1.0.1) - CORREGIDO PARA TMDB
+//  Plugin Cuevana3a para Zynora (v1.0.2) - VERSIÓN LIMPIA
 // ============================================================
 const WEB = "https://cuevana3a.pro";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
@@ -19,24 +17,19 @@ function pedir(url, referer) {
   return zynora.fetch(url, { headers: h });
 }
 
-// Función crítica para limpiar los títulos mezclados con años o palabras clave
 function limpiarTitulo(textoBruto) {
   let t = String(textoBruto || "").trim();
   let anio = "";
   
-  // 1. Limpiar prefijos de tipo de contenido pegados (ej: PELÍCULASpider-Man -> Spider-Man)
   t = t.replace(/^(?:PELÍCULA|SERIE|Pelicula|Serie)\s*/i, "");
   
-  // 2. Extraer año si está pegado al inicio (ej: 2026Minha Melhor Amiga -> Minha Melhor Amiga)
   const mAnioInicio = t.match(/^(\d{4})\s*(.*)$/);
   if (mAnioInicio) {
     anio = mAnioInicio[1];
     t = mAnioInicio[2].trim();
   }
   
-  // 3. Quitar excesos por si acaso quedan duplicados por la estructura de Cuevana
   t = t.replace(/^(?:PELÍCULA|SERIE|Pelicula|Serie)\s*/i, "");
-
   return { title: t, year: anio };
 }
 
@@ -54,7 +47,6 @@ function leerTarjetas(html) {
     const textoNodo = String(a.text || "").trim();
     if (!textoNodo) continue;
     
-    // Aplicamos la limpieza profunda antes de enviar a TMDb
     const infoLimpia = limpiarTitulo(textoNodo);
     
     let poster = "";
@@ -88,7 +80,6 @@ export async function home() {
   const html = r.text();
   
   const tarjetas = leerTarjetas(html);
-  
   const pelis = tarjetas.filter(x => x.kind === "movie");
   const series = tarjetas.filter(x => x.kind === "series");
   
@@ -170,8 +161,3 @@ export async function resolve(ref) {
   
   return { url: embedUrl, headers: { Referer: ref, "User-Agent": UA } };
 }
-```
-
-<FollowUp>
-Copia este bloque de código completo en tu archivo **plugin.js**, actualízalo en tu repositorio y pruébalo en la app. Dime si con esta corrección las **portadas y las fichas de TMDb** ya cargan con normalidad.
-</FollowUp>
