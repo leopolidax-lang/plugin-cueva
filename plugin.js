@@ -1,5 +1,5 @@
 // ============================================================
-//  Plugin Cuevana3a para Zynora (v1.0.2) - VERSIÓN LIMPIA
+//  Plugin Cuevana3a para Zynora (v1.0.3) - VERSIÓN CORREGIDA
 // ============================================================
 const WEB = "https://cuevana3a.pro";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
@@ -8,7 +8,7 @@ function abs(u) {
   if (!u) return "";
   if (u.indexOf("//") === 0) return "https:" + u;
   if (/^https?:\/\//i.test(u)) return u;
-  return u[0] === "/" ? WEB + u : WEB + "/" + u;
+  return u === "/" ? WEB + u : WEB + "/" + u;
 }
 
 function pedir(url, referer) {
